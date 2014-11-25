@@ -7,9 +7,10 @@
 
 #include <stdio.h>
 #include <gtest/gtest.h>
+#include <vector>
 #include "./Arena.h"
 
-// abstract class for the biker
+// class for a biker
 class Biker {
  public:
   enum Direction {
@@ -22,15 +23,21 @@ class Biker {
   // destructor
   ~Biker();
 
+  // get the new position of the biker assuming he is heading into <direction>
+  std::vector<int> getNewPosition(Direction direction) const;
+
   // take an input and execute the corresponding move
   void move(Arena* arena);
   FRIEND_TEST(TronTest, move);
+
+  // create a random move
+  Direction getRandomDirection() const;
 
   // change the direction according to given parameter
   void turn(Direction direction);
 
   // check whether there was a crash
-  bool crashControl(size_t x, size_t y, Arena* arena);
+  bool crashControl(size_t x, size_t y, Arena* arena) const;
 
   // take appropriate action when a crash was detected
   void crashHandling(Arena* arena);
@@ -47,8 +54,14 @@ class Biker {
   // get number of the biker
   int getNumber() const;
 
+  // get status of the biker
+  enum Status {
+    RACING = 1, DESTROYED = 0
+  };
+  Status getStatus() const;
+
  private:
-  // number of the biker
+  // number of the biker - player < 0, computer > 0
   int _bikeNumber;
 
   // current x coordinate of the biker
@@ -60,11 +73,8 @@ class Biker {
   // current direction of the biker
   Direction _direction;
 
-  // start x coordinate of the biker
-  size_t _xStartPos;
-
-  // start y coordinate of the biker
-  size_t _yStartPos;
+  // status of the biker
+  Status _status;
 };
 
 // class for a computer biker
@@ -75,9 +85,6 @@ class Computer : public Biker {
 
   // destructor
   ~Computer();
-
-  // create a random move
-  void getRandomMove();
 };
 
 // class for a player

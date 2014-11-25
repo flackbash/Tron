@@ -14,6 +14,7 @@ Tron::Tron() {
   noecho();
   curs_set(false);
   nodelay(stdscr, true);
+  _opponents = 0;
 }
 
 // _____________________________________________________________________________
@@ -22,10 +23,22 @@ Tron::~Tron() {
 }
 
 // _____________________________________________________________________________
+Biker* Tron::createOpponent() {
+  // TODO(flackbash): solution for start position (and direction)
+  _opponents++;
+  Biker::Direction direction = Biker::Direction(_opponents + 64);
+  Biker* computer = new Biker(5, 5, direction, -_opponents);
+  return computer;
+}
+
+// _____________________________________________________________________________
 void Tron::play() {
-  Computer* computer;
-  Player* player = new Player(5, 5, Biker::Direction::UP, -1);
-  Arena* arena = new Arena(30, 30);
+  // TODO(flackbash): more opponents should be added with createOpponent later
+  Biker* player = new Biker(5, 5, Biker::Direction::UP, -1);
+  Biker* computer = new Biker(25, 25, Biker::Direction::DOWN, 1);
+  _opponents = 1;
+
+  Arena* arena = new Arena(60, 40);
 
   // add a wall to the initial position of player
   arena->addWall(player);
@@ -45,12 +58,17 @@ void Tron::play() {
     if (key < 69 & key > 64) {
       player->turn(Biker::Direction(key));
     }
-    if (++counter % 30 == 0) {
+    if (++counter % 5 == 0) {
+      computer->turn(computer->getRandomDirection());
+      computer->move(arena);
       player->move(arena);
-      // printf("\x1b[%d;%dH%d\n", 75, 15, counter);
       arena->show();
+      // check if the game is already lost
+      if (player->getStatus() == Biker::Status::DESTROYED) {
+        _status = LOST;
+        break;
+      }
     }
-
     // wait for 10 milliseconds.
     usleep(10 * 1000);
   }

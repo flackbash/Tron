@@ -1,46 +1,56 @@
 // Copyright 2014, flackbash
 // Author: flackbash <flack2bash@gmail.com>
 
+#include <vector>
 #include "./Biker.h"
 
 // _____________________________________________________________________________
 Biker::Biker(size_t x, size_t y, Direction direction, int number) {
-  _xStartPos = x;
-  _yStartPos = y;
-  _xPos = _xStartPos;
-  _yPos = _yStartPos;
+  _xPos = x;
+  _yPos = y;
   _direction = direction;
   _bikeNumber = number;
+  _status = RACING;
 }
 
 // _____________________________________________________________________________
 Biker::~Biker() {}
 
 // _____________________________________________________________________________
-void Biker::move(Arena* arena) {
-  size_t xOld = _xPos;
-  size_t yOld = _yPos;
-  switch (_direction) {
+std::vector<int> Biker::getNewPosition(Direction direction) const {
+  std::vector<int> position;
+  position.push_back(_xPos);
+  position.push_back(_yPos);
+
+  switch (direction) {
     case UP:
-      _yPos++;
+      position[1]++;
       break;
     case DOWN:
-      _yPos--;
+      position[1]--;
       break;
     case RIGHT:
-      _xPos++;
+      position[0]++;
       break;
     case LEFT:
-      _xPos--;
+      position[0]--;
       break;
   }
-  if (crashControl(_xPos, _yPos, arena) == true) {
-    printf("\x1b[%d;%dHCrash! Direction: %d\n", 20, 20, _direction);
+  return position = {position[0], position[1]};
+}
+
+// _____________________________________________________________________________
+void Biker::move(Arena* arena) {
+  std::vector<int> newPos = getNewPosition(_direction);
+
+  int x = newPos[0];
+  int y = newPos[1];
+
+  if (crashControl(x, y, arena) == true) {
     crashHandling(arena);
-    // TODO(flackbash): remove - just for debugging purposes:
-    _xPos = xOld;
-    _yPos = yOld;
   } else {
+    _xPos = x;
+    _yPos = y;
     arena->addWall(this);
   }
 }
@@ -64,7 +74,7 @@ void Biker::turn(Direction direction) {
 }
 
 // _____________________________________________________________________________
-bool Biker::crashControl(size_t x, size_t y, Arena* arena) {
+bool Biker::crashControl(size_t x, size_t y, Arena* arena) const {
   // no crash if cell status is EMPTY
   if (arena->getCellStatus(x, y) == 0) {
     return false;
@@ -75,7 +85,45 @@ bool Biker::crashControl(size_t x, size_t y, Arena* arena) {
 
 // _____________________________________________________________________________
 void Biker::crashHandling(Arena* arena) {
-  arena->removeWall(this);
+  if (_bikeNumber > 0) {
+    int checked[4] = {0, 0, 0, 0};
+    int counter = 0;
+    bool collision = true;
+    std::vector<int> newPos;
+    Direction direction = _direction;
+
+    while (collision == true) {
+      // check if direction has already been checked
+      for (int i = 0; i < 4; i++) {
+        if (checked[i] == direction) {
+          direction = Direction((direction % 4) + 65);
+          break;
+        } else if (checked[i] == 0) {
+          checked[i] = direction;
+          counter++;
+          break;
+        }
+      }
+
+      // check if all directions have been checked already
+      if (counter == 4) {
+        arena->removeWall(this);
+        _status = DESTROYED;
+        break;
+      }
+
+      // check if moving into the new direction causes a crash
+      newPos = getNewPosition(direction);
+      collision = crashControl(newPos[0], newPos[1], arena);
+    }
+    // turn into the last checked direction (this does either not cause a crash
+    // or the biker is DESTROYED already so it doesn't matter)
+    turn(direction);
+    move(arena);
+  } else {
+    arena->removeWall(this);
+    _status = DESTROYED;
+  }
 }
 
 // _____________________________________________________________________________
@@ -99,7 +147,17 @@ int Biker::getNumber() const {
 }
 
 // _____________________________________________________________________________
-void Computer::getRandomMove() {}
+Biker::Status Biker::getStatus() const {
+  return _status;
+}
+
+// _____________________________________________________________________________
+Biker::Direction Biker::getRandomDirection() const {
+  Direction direction;
+  unsigned int seed = (unsigned int)(time(NULL));
+  direction = Direction(65 + rand_r(&seed) % 4);
+  return direction;
+}
 
 // _____________________________________________________________________________
 Player::Player(size_t x, size_t y, Direction direction, int number)

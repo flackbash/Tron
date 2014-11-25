@@ -46,6 +46,7 @@ class Arena {
   FRIEND_TEST(TronTest, getCellStatus);
   FRIEND_TEST(TronTest, crashControl);
   FRIEND_TEST(TronTest, removeWall);
+  FRIEND_TEST(TronTest, crashHandling);
 
  private:
   // x and y alignment of the arena
