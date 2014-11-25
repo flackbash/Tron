@@ -11,7 +11,6 @@ TEST(TronTest, move) {
   Arena* arena = new Arena(10, 10);
   Biker* biker = new Biker(5, 5, Biker::Direction::UP, 1);
 
-  // tests without crash
   biker->_direction = Biker::Direction::DOWN;
   biker->move(arena);
   ASSERT_EQ(5, biker->_xPos);
@@ -36,7 +35,7 @@ TEST(TronTest, move) {
 // _____________________________________________________________________________
 TEST(TronTest, crashControl) {
   Arena* arena = new Arena(10, 10);
-  Player* player = new Player(5, 5, Biker::Direction::UP, -1);
+  Biker* player = new Biker(5, 5, Biker::Direction::UP, -1);
 
   for (int i = 0; i < arena->getXAl(); i++) {
     arena->_cells[i][3] = Arena::CellStatus::PLAYER1;
@@ -51,7 +50,7 @@ TEST(TronTest, crashControl) {
 // _____________________________________________________________________________
 TEST(TronTest, crashHandling) {
   Arena* arena = new Arena(10, 10);
-  Player* player = new Player(9, 2, Biker::Direction::UP, 1);
+  Biker* player = new Biker(9, 2, Biker::Direction::UP, 1);
 
   for (int i = 0; i < arena->getXAl(); i++) {
     arena->_cells[i][3] = Arena::CellStatus::PLAYER1;
@@ -63,7 +62,7 @@ TEST(TronTest, crashHandling) {
 // _____________________________________________________________________________
 TEST(TronTest, getCellStatus) {
   Arena* arena = new Arena(10, 10);
-  Player* player = new Player(5, 5, Biker::Direction::UP, -1);
+  Biker* player = new Biker(5, 5, Biker::Direction::UP, -1);
 
   for (int i = 0; i < arena->getXAl(); i++) {
     arena->_cells[i][3] = Arena::CellStatus::PLAYER1;
@@ -87,7 +86,7 @@ TEST(TronTest, getCellStatus) {
 // _____________________________________________________________________________
 TEST(TronTest, addWall) {
   Arena* arena = new Arena(10, 10);
-  Player* player = new Player(5, 5, Biker::Direction::UP, -1);
+  Biker* player = new Biker(5, 5, Biker::Direction::UP, -1);
 
   arena->addWall(player);
   ASSERT_EQ(-1, arena->getCellStatus(5, 5));
@@ -116,7 +115,7 @@ TEST(TronTest, addWall) {
 // _____________________________________________________________________________
 TEST(TronTest, removeWall) {
   Arena* arena = new Arena(10, 10);
-  Player* player = new Player(5, 5, Biker::Direction::UP, -1);
+  Biker* player = new Biker(5, 5, Biker::Direction::UP, -1);
 
   for (int i = 0; i < arena->getXAl(); i++) {
     arena->_cells[i][3] = Arena::CellStatus::PLAYER1;

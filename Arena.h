@@ -40,7 +40,7 @@ class Arena {
   // check if and by whom a cell is occupied
   enum CellStatus {
     EMPTY = 0, PLAYER1 = -1, COMPUTER1 = 1, COMPUTER2 = 2,
-    COMPUTER3 = 3, COMPUTER4 = 4, COMPUTER5 = 5, COMPUTER6 = 6, OUTSIDE = -10
+    COMPUTER3 = 3, COMPUTER4 = 4, COMPUTER5 = 5, OUTSIDE = -10
   };
   CellStatus getCellStatus(int x, int y) const;
   FRIEND_TEST(TronTest, getCellStatus);

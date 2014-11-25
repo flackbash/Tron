@@ -108,6 +108,7 @@ void Biker::crashHandling(Arena* arena) {
       // check if all directions have been checked already
       if (counter == 4) {
         arena->removeWall(this);
+        arena->clearArea(_xPos, _yPos);
         _status = DESTROYED;
         break;
       }
@@ -122,6 +123,7 @@ void Biker::crashHandling(Arena* arena) {
     move(arena);
   } else {
     arena->removeWall(this);
+    arena->clearArea(_xPos, _yPos);
     _status = DESTROYED;
   }
 }
@@ -158,7 +160,3 @@ Biker::Direction Biker::getRandomDirection() const {
   direction = Direction(65 + rand_r(&seed) % 4);
   return direction;
 }
-
-// _____________________________________________________________________________
-Player::Player(size_t x, size_t y, Direction direction, int number)
-: Biker(x, y, direction, number) {}

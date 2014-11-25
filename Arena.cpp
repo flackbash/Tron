@@ -5,6 +5,15 @@
 #include "./Arena.h"
 #include "./Biker.h"
 
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define WHITE   "\x1b[37m"
+#define RESET   "\x1b[0m"
+
 // _____________________________________________________________________________
 Arena::Arena(size_t x, size_t y) {
   _xAl = x;
@@ -35,7 +44,7 @@ void Arena::addWall(Biker* biker) {
 void Arena::show() {
   // print arena borders
   printf("\x1b[7m");
-  printf("\x1b[31m");
+  printf("%s", RED);
   // horizontal borders
   for (int i = 1; i <= (_xAl * 2) + 2; i++) {
     printf("\x1b[%d;%dH ", 0, i);
@@ -47,15 +56,38 @@ void Arena::show() {
     printf("\x1b[%d;%dH ", i, (_xAl * 2) + 2);
   }
 
-  printf("\x1b[0m");
+  printf("%s", RESET);
   // print the bikers' walls
   for (int y = 0; y < _yAl; y++) {
     for (int x = 0; x < _xAl; x++) {
       for (int s = 0; s < 2; s++) {
+        switch (_cells[x][y]) {
+          case(EMPTY):
+            printf("%s", RESET);
+            break;
+          case(PLAYER1):
+            printf("%s", GREEN);
+            break;
+          case(COMPUTER1):
+            printf("%s", YELLOW);
+            break;
+          case(COMPUTER2):
+            printf("%s", BLUE);
+            break;
+          case(COMPUTER3):
+            printf("%s", MAGENTA);
+            break;
+          case(COMPUTER4):
+            printf("%s", CYAN);
+            break;
+          case(COMPUTER5):
+            printf("%s", WHITE);
+            break;
+        }
         if (_cells[x][y] != EMPTY) {
           printf("\x1b[7m");
         } else {
-          printf("\x1b[0m");
+          printf("%s", RESET);
         }
         printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
       }
@@ -76,7 +108,13 @@ void Arena::removeWall(Biker* biker) {
 }
 
 // _____________________________________________________________________________
-void Arena::clearArea(size_t x, size_t y) {}
+void Arena::clearArea(size_t x, size_t y) {
+  for (int i = -3; i < 4; i++) {
+    for (int j = -3; j < 4; j++) {
+      _cells[i + x][j + y] = EMPTY;
+    }
+  }
+}
 
 // _____________________________________________________________________________
 size_t Arena::getXAl() const {

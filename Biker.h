@@ -77,24 +77,4 @@ class Biker {
   Status _status;
 };
 
-// class for a computer biker
-class Computer : public Biker {
- public:
-  // constructor
-  Computer(size_t x, size_t y, Direction direction, int number);
-
-  // destructor
-  ~Computer();
-};
-
-// class for a player
-class Player : public Biker {
- public:
-  // constructor
-  Player(size_t x, size_t y, Direction direction, int number);
-
-  // destructor
-  ~Player();
-};
-
 #endif  // PROGRAMMING_ARMAGETRON_BIKER_H_  // NOLINT
