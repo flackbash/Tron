@@ -1,5 +1,5 @@
 CXX = g++ -g -std=c++0x
-CHECKSTYLE = python ../cpplint.py
+CHECKSTYLE = python ./cpplint.py
 MAIN = $(basename $(wildcard *Main.cpp))
 TEST = $(basename $(wildcard *Test.cpp))
 OBJECTS = $(addsuffix .o, $(filter-out %Main %Test, $(basename $(wildcard *.cpp))))
