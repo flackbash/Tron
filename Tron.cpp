@@ -81,10 +81,7 @@ void Tron::play() {
   int counter = 0;
 
   while (true) {
-    // long startTime, runTime;
-    // startTime = System.currentTimeMillis();
-    // runTime = System.currentTimeMillis() - startTime;
-
+    // TODO: fix segmentation fault when crashing into an arena border...
     // get user input
     int key = getch();
 
@@ -94,8 +91,6 @@ void Tron::play() {
     }
     if (++counter % 5 == 0) {
       // move the computer opponents
-      // TODO(flackbash): change seed for getRandomDirection. Right now all
-      // opponents move into the same direction...
       for (auto& computer : _opponents) {
         computer->turn(computer->getRandomDirection());
         computer->move(arena);

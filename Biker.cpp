@@ -156,7 +156,7 @@ Biker::Status Biker::getStatus() const {
 // _____________________________________________________________________________
 Biker::Direction Biker::getRandomDirection() const {
   Direction direction;
-  unsigned int seed = (unsigned int)(time(NULL));
+  unsigned int seed = (unsigned int)(time(NULL) + _bikeNumber);
   direction = Direction(65 + rand_r(&seed) % 4);
   return direction;
 }
