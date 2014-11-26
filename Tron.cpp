@@ -16,16 +16,17 @@ Tron::Tron(int sizeX, int sizeY, int numOpponents) {
   curs_set(false);
   nodelay(stdscr, true);
 
+  _status = ONGOING;
+  _numOpponents = numOpponents;
   arena = new Arena(sizeX, sizeY);
   player = new Biker((sizeX / 4), (sizeY / 5), Biker::Direction::UP, -1);
-  _numOpponents = numOpponents;
 }
 
 // _____________________________________________________________________________
 Tron::~Tron() {
+  // "delete arena" conflicts with destructor of arena?
   endwin();
   delete player;
-  // delete arena;
   for (auto& computer : _opponents) {
     delete computer;
   }
@@ -81,31 +82,47 @@ void Tron::play() {
   int counter = 0;
 
   while (true) {
-    // TODO: fix segmentation fault when crashing into an arena border...
     // get user input
-    int key = getch();
+    if (_status == ONGOING) {
+      int key = getch();
 
-    // if the input is an arrow key turn accordingly
-    if (key < 69 & key > 64) {
-      player->turn(Biker::Direction(key));
-    }
-    if (++counter % 5 == 0) {
-      // move the computer opponents
-      for (auto& computer : _opponents) {
-        computer->turn(computer->getRandomDirection());
-        computer->move(arena);
+      // if the input is an arrow key turn accordingly
+      if (key < 69 & key > 64) {
+        player->turn(Biker::Direction(key));
       }
+      if (++counter % 7 == 0) {
+        // move the computer opponents
+        for (auto& computer : _opponents) {
+          computer->turn(computer->getRandomDirection());
+          computer->move(arena);
+        }
 
-      // move the player
-      player->move(arena);
-      arena->show();
+        // move the player
+        player->move(arena);
+        arena->show();
 
-      // check whether the game is already lost
-      if (player->getStatus() == Biker::Status::DESTROYED) {
-        _status = LOST;
-        endGame(arena);
-        break;
+        // check whether the game is already lost
+        if (player->getStatus() == Biker::Status::DESTROYED) {
+          _status = LOST;
+          endGame();
+        // check whether the game is already won
+        } else {
+          int oppLeft = 0;
+          for (auto& opponent : _opponents) {
+            if (opponent->getStatus() == Biker::Status::DESTROYED) {
+              oppLeft++;
+            }
+          }
+          if (_numOpponents - oppLeft == 0) {
+            _status = WON;
+            endGame();
+          }
+        }
       }
+    } else {
+      int ch = getch();
+      if (ch == 'q') break;
+      if (ch == 'r') reset();
     }
     // wait for 10 milliseconds.
     usleep(10 * 1000);
@@ -113,7 +130,7 @@ void Tron::play() {
 }
 
 // _____________________________________________________________________________
-void Tron::endGame(Arena* arena) {
+void Tron::endGame() {
   int y = arena->getYAl();
   int x = arena->getXAl();
 
@@ -122,19 +139,22 @@ void Tron::endGame(Arena* arena) {
   } else if (_status == WON) {
     printf("\x1b[%d;%dHYOU WON!\n", (y / 2) - 5, x - 3);
   }
-  while (true) {
-    printf("\x1b[%d;%dHPress 'Q' to quit.", (y / 2) - 3, x - 8);
-    printf("\x1b[%d;%dHPress 'R' to play again.", (y / 2) - 2, x - 11);
 
-    int ch = getch();
-    if (ch == 'q') break;
-    // TODO(flackbash): implement reset()-method for replay
-    if (ch == 'r') break;
-  }
+  printf("\x1b[%d;%dHPress 'Q' to quit.", (y / 2) - 3, x - 8);
+  printf("\x1b[%d;%dHPress 'R' to play again.", (y / 2) - 2, x - 11);
+  fflush(stdout);
 }
 
 // _____________________________________________________________________________
-void Tron::reset() {}
+void Tron::reset() {
+  clear();
+  player->reset();
+  for (auto& opponent : _opponents) {
+    opponent->reset();
+  }
+  arena->reset();
+  _status = ONGOING;
+}
 
 // _____________________________________________________________________________
 Tron::GameStatus Tron::getStatus() const {

@@ -6,15 +6,15 @@
 
 // _____________________________________________________________________________
 Biker::Biker(size_t x, size_t y, Direction direction, int number) {
+  _startXPos = x;
+  _startYPos = y;
+  _startDirection = direction;
   _xPos = x;
   _yPos = y;
   _direction = direction;
   _bikeNumber = number;
   _status = RACING;
 }
-
-// _____________________________________________________________________________
-Biker::~Biker() {}
 
 // _____________________________________________________________________________
 std::vector<int> Biker::getNewPosition(Direction direction) const {
@@ -128,6 +128,13 @@ void Biker::crashHandling(Arena* arena) {
   }
 }
 
+// _____________________________________________________________________________
+void Biker::reset() {
+  _xPos = _startXPos;
+  _yPos = _startYPos;
+  _direction = _startDirection;
+  _status = RACING;
+}
 // _____________________________________________________________________________
 size_t Biker::getXPos() const {
   return _xPos;

@@ -24,7 +24,7 @@ class Tron {
   void play();
 
   // end the game in an appropriate way
-  void endGame(Arena* arena);
+  void endGame();
 
   // reset values for replay
   void reset();

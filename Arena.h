@@ -31,10 +31,13 @@ class Arena {
   // delete  the walls in the direct surrounding of an explosion
   void clearArea(size_t x, size_t y);
 
-  // get the x-alignment of the arena
+  // reset (affects _cells)
+  void reset();
+
+  // get the x-alignment
   size_t getXAl() const;
 
-  // get the y-alignment of the arena
+  // get the y-alignment
   size_t getYAl() const;
 
   // check if and by whom a cell is occupied
@@ -49,7 +52,7 @@ class Arena {
   FRIEND_TEST(TronTest, crashHandling);
 
  private:
-  // x and y alignment of the arena
+  // x and y alignment
   size_t _xAl;
   size_t _yAl;
 

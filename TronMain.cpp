@@ -7,6 +7,6 @@
 
 // Main function.
 int main(int argc, char** argv) {
-  Tron tron(40, 40, 2);
+  Tron tron(40, 40, 5);
   tron.play();
 }
