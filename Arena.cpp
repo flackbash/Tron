@@ -111,7 +111,7 @@ void Arena::removeWall(Biker* biker) {
 void Arena::clearArea(size_t x, size_t y) {
   for (int i = -2; i < 3; i++) {
     for (int j = -2; j < 3; j++) {
-      // make sure values are within arena alignments
+      // make sure values are within arena borders
       if (i + x >= 0 & j + y >= 0 & i + x < _xAl & j + y < _yAl) {
         _cells[i + x][j + y] = EMPTY;
       }

@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "./Tron.h"
 #include "./Biker.h"
 #include "./Arena.h"
@@ -18,6 +19,17 @@ Tron::Tron(int sizeX, int sizeY, int numOpponents) {
 
   _status = ONGOING;
   _numOpponents = numOpponents;
+
+  // get window size and adjust arena size if the default value was demanded
+  int winWidth, winHeight;
+  getmaxyx(stdscr, winHeight, winWidth);
+  if (sizeX == 0) {
+    sizeX = (winWidth / 2) - 1;
+  }
+  if (sizeY == 0) {
+    sizeY = winHeight - 2;
+  }
+
   arena = new Arena(sizeX, sizeY);
   player = new Biker((sizeX / 4), (sizeY / 5), Biker::Direction::UP, -1);
 }
@@ -75,9 +87,6 @@ void Tron::addOpponents(int number) {
 void Tron::play() {
   addOpponents(_numOpponents);
 
-  // add a wall at the initial position of player
-  // arena->addWall(player);
-
   // counter for moving into the current direction without a user input
   int counter = 0;
 
@@ -90,6 +99,7 @@ void Tron::play() {
       if (key < 69 & key > 64) {
         player->turn(Biker::Direction(key));
       }
+      // TODO(flackbash): keep speed constant for different arena alignments
       if (++counter % 7 == 0) {
         // move the computer opponents
         for (auto& computer : _opponents) {
@@ -101,11 +111,11 @@ void Tron::play() {
         player->move(arena);
         arena->show();
 
-        // check whether the game is already lost
+        // check whether the game is lost
         if (player->getStatus() == Biker::Status::DESTROYED) {
           _status = LOST;
           endGame();
-        // check whether the game is already won
+        // check whether the game is won
         } else {
           int oppLeft = 0;
           for (auto& opponent : _opponents) {

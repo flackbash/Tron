@@ -34,10 +34,10 @@ class Arena {
   // reset (affects _cells)
   void reset();
 
-  // get the x-alignment
+  // get the x-size
   size_t getXAl() const;
 
-  // get the y-alignment
+  // get the y-size
   size_t getYAl() const;
 
   // check if and by whom a cell is occupied
@@ -52,7 +52,7 @@ class Arena {
   FRIEND_TEST(TronTest, crashHandling);
 
  private:
-  // x and y alignment
+  // x and y size
   size_t _xAl;
   size_t _yAl;
 
