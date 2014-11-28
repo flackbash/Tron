@@ -1,6 +1,11 @@
 // Copyright 2014, flackbash
 // Author: flackbash <flack2bash@gmail.com>
 
+/*
+* constant-speed for different arena sizes (getMillis())
+* navigation only with LEFT-Arrow and RIGHT-Arrow
+* parameter for speed
+*/
 #include <iostream>
 #include "./Tron.h"
 #include "./Arena.h"

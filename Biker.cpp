@@ -56,7 +56,7 @@ void Biker::move(Arena* arena) {
 }
 
 // _____________________________________________________________________________
-void Biker::turn(Direction direction) {
+void Biker::turnComputer(Direction direction) {
   switch (direction) {
     case UP:
       _direction = UP;
@@ -70,6 +70,42 @@ void Biker::turn(Direction direction) {
     case LEFT:
       _direction = LEFT;
       break;
+  }
+}
+
+
+// _____________________________________________________________________________
+void Biker::turn(Direction direction) {
+  if (direction == RIGHT) {
+    switch (_direction) {
+      case UP:
+        _direction = RIGHT;
+        break;
+      case DOWN:
+        _direction = LEFT;
+        break;
+      case RIGHT:
+        _direction = DOWN;
+        break;
+      case LEFT:
+        _direction = UP;
+        break;
+    }
+  } else if (direction == LEFT) {
+    switch (_direction) {
+      case UP:
+        _direction = LEFT;
+        break;
+      case DOWN:
+        _direction = RIGHT;
+        break;
+      case RIGHT:
+        _direction = UP;
+        break;
+      case LEFT:
+        _direction = DOWN;
+        break;
+    }
   }
 }
 
@@ -117,10 +153,11 @@ void Biker::crashHandling(Arena* arena) {
       newPos = getNewPosition(direction);
       collision = crashControl(newPos[0], newPos[1], arena);
     }
-    // turn into the last checked direction (this does either not cause a crash
-    // or the biker is DESTROYED already so it doesn't matter)
-    turn(direction);
-    move(arena);
+    // turn into the last checked direction
+    if (_status == RACING) {
+      turnComputer(direction);
+      move(arena);
+    }
   } else {
     arena->removeWall(this);
     arena->clearArea(_xPos, _yPos);

@@ -100,11 +100,13 @@ void Tron::play() {
         player->turn(Biker::Direction(key));
       }
       // TODO(flackbash): keep speed constant for different arena alignments
-      if (++counter % 7 == 0) {
+      if (++counter % 9 == 0) {
         // move the computer opponents
         for (auto& computer : _opponents) {
-          computer->turn(computer->getRandomDirection());
-          computer->move(arena);
+          if (computer->getStatus() == Biker::Status::RACING) {
+            computer->turnComputer(computer->getRandomDirection());
+            computer->move(arena);
+          }
         }
 
         // move the player

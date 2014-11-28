@@ -50,7 +50,7 @@ TEST(TronTest, crashControl) {
 // _____________________________________________________________________________
 TEST(TronTest, crashHandling) {
   Arena* arena = new Arena(10, 10);
-  Biker* player = new Biker(9, 2, Biker::Direction::UP, 1);
+  Biker* player = new Biker(9, 2, Biker::Direction::UP, -1);
 
   for (int i = 0; i < arena->getXAl(); i++) {
     arena->_cells[i][3] = Arena::CellStatus::PLAYER1;

@@ -30,8 +30,11 @@ class Biker {
   // create a random move
   Direction getRandomDirection() const;
 
-  // change the direction according to given parameter
+  // change the direction of the player according to given parameter
   void turn(Direction direction);
+
+  // change the direction of a computer according to given parameter
+  void turnComputer(Direction direction);
 
   // check whether there has been a crash
   bool crashControl(size_t x, size_t y, Arena* arena) const;
