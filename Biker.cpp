@@ -5,7 +5,7 @@
 #include "./Biker.h"
 
 // _____________________________________________________________________________
-Biker::Biker(size_t x, size_t y, Direction direction, int number) {
+Biker::Biker(int x, int y, Direction direction, int number) {
   _startXPos = x;
   _startYPos = y;
   _startDirection = direction;
@@ -110,7 +110,7 @@ void Biker::turn(Direction direction) {
 }
 
 // _____________________________________________________________________________
-bool Biker::crashControl(size_t x, size_t y, Arena* arena) const {
+bool Biker::crashControl(int x, int y, Arena* arena) const {
   // no crash if cell status is EMPTY
   if (arena->getCellStatus(x, y) == 0) {
     return false;
@@ -173,12 +173,12 @@ void Biker::reset() {
   _status = RACING;
 }
 // _____________________________________________________________________________
-size_t Biker::getXPos() const {
+int Biker::getXPos() const {
   return _xPos;
 }
 
 // _____________________________________________________________________________
-size_t Biker::getYPos() const {
+int Biker::getYPos() const {
   return _yPos;
 }
 

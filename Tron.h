@@ -12,7 +12,7 @@
 class Tron {
  public:
   // constructor
-  Tron(int sizeX, int sizeY, int numOpponents);
+  Tron(int sizeX, int sizeY, int numOpponents, int speed);
 
   // destructor
   ~Tron();
@@ -39,6 +39,9 @@ class Tron {
 
   // number of computer opponents
   int _numOpponents;
+
+  // speed of the game ranging from 1 to 40 with 40 being the fastest speed
+  int _speed;
 
   // vector that holds all involved computer opponents
   std::vector<Biker*> _opponents;

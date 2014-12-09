@@ -9,7 +9,7 @@
 #include "./Arena.h"
 
 // _____________________________________________________________________________
-Tron::Tron(int sizeX, int sizeY, int numOpponents) {
+Tron::Tron(int sizeX, int sizeY, int numOpponents, int speed) {
   // initialize screen
   initscr();
   cbreak();
@@ -19,6 +19,7 @@ Tron::Tron(int sizeX, int sizeY, int numOpponents) {
 
   _status = ONGOING;
   _numOpponents = numOpponents;
+  _speed = speed;
 
   // get window size and adjust arena size if the default value was demanded
   int winWidth, winHeight;
@@ -63,7 +64,7 @@ void Tron::addOpponents(int number) {
         break;
       case(2):
         startXPos = (xAl / 4) * 1;
-        startYPos = (yAl / 5) * 2;
+        startYPos = (yAl / 5) * 3;
         break;
       case(3):
         startXPos = (xAl / 4) * 3;
@@ -99,8 +100,8 @@ void Tron::play() {
       if (key < 69 & key > 64) {
         player->turn(Biker::Direction(key));
       }
-      // TODO(flackbash): keep speed constant for different arena alignments
-      if (++counter % 9 == 0) {
+      // TODO(flackbash): keep speed constant for different arena sizes
+      if (++counter % (10 * _speed) == 0) {
         // move the computer opponents
         for (auto& computer : _opponents) {
           if (computer->getStatus() == Biker::Status::RACING) {
@@ -136,8 +137,7 @@ void Tron::play() {
       if (ch == 'q') break;
       if (ch == 'r') reset();
     }
-    // wait for 10 milliseconds.
-    usleep(10 * 1000);
+    usleep(1000);
   }
 }
 

@@ -18,7 +18,7 @@ class Biker {
   };
 
   // constructor
-  Biker(size_t x, size_t y, Direction direction, int number);
+  Biker(int x, int y, Direction direction, int number);
 
   // get the new position of the biker assuming he is heading into <direction>
   std::vector<int> getNewPosition(Direction direction) const;
@@ -37,7 +37,7 @@ class Biker {
   void turnComputer(Direction direction);
 
   // check whether there has been a crash
-  bool crashControl(size_t x, size_t y, Arena* arena) const;
+  bool crashControl(int x, int y, Arena* arena) const;
 
   // take appropriate action when a crash was detected
   void crashHandling(Arena* arena);
@@ -46,10 +46,10 @@ class Biker {
   void reset();
 
   // get current x coordinate
-  size_t getXPos() const;
+  int getXPos() const;
 
   // get current y coordinate
-  size_t getYPos() const;
+  int getYPos() const;
 
   // get current direction
   Direction getDirection() const;

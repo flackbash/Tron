@@ -32,6 +32,7 @@ TEST(TronTest, move) {
   ASSERT_EQ(5, biker->_yPos);
 }
 
+
 // _____________________________________________________________________________
 TEST(TronTest, crashControl) {
   Arena* arena = new Arena(10, 10);
@@ -47,6 +48,7 @@ TEST(TronTest, crashControl) {
   ASSERT_TRUE(player->crashControl(1, 12, arena));
 }
 
+/*
 // _____________________________________________________________________________
 TEST(TronTest, crashHandling) {
   Arena* arena = new Arena(10, 10);
@@ -58,6 +60,7 @@ TEST(TronTest, crashHandling) {
 
   player->move(arena);
 }
+*/
 
 // _____________________________________________________________________________
 TEST(TronTest, getCellStatus) {
@@ -112,6 +115,7 @@ TEST(TronTest, addWall) {
   }
 }
 
+/*
 // _____________________________________________________________________________
 TEST(TronTest, removeWall) {
   Arena* arena = new Arena(10, 10);
@@ -128,3 +132,4 @@ TEST(TronTest, removeWall) {
     }
   }
 }
+*/

@@ -14,7 +14,7 @@ class Biker;
 class Arena {
  public:
   // constructor
-  Arena(size_t x, size_t y);
+  Arena(int x, int y);
 
   // destructor
   ~Arena();
@@ -25,20 +25,23 @@ class Arena {
   // add a new part of wall to the arena
   void addWall(Biker* biker);
 
+  // conceal a printed cell
+  void concealCell(int x, int y);
+
   // remove the walls of the player that has just crashed
   void removeWall(Biker* biker);
 
   // delete  the walls in the direct surrounding of an explosion
-  void clearArea(size_t x, size_t y);
+  void clearArea(int x, int y);
 
   // reset (affects _cells)
   void reset();
 
   // get the x-size
-  size_t getXAl() const;
+  int getXAl() const;
 
   // get the y-size
-  size_t getYAl() const;
+  int getYAl() const;
 
   // check if and by whom a cell is occupied
   enum CellStatus {
@@ -53,8 +56,8 @@ class Arena {
 
  private:
   // x and y size
-  size_t _xAl;
-  size_t _yAl;
+  int _xAl;
+  int _yAl;
 
   // holds which cells are occupied by which player and which are empty
   CellStatus** _cells;

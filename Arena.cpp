@@ -15,7 +15,7 @@
 #define RESET   "\x1b[0m"
 
 // _____________________________________________________________________________
-Arena::Arena(size_t x, size_t y) {
+Arena::Arena(int x, int y) {
   _xAl = x;
   _yAl = y;
   _cells = new CellStatus* [_xAl];
@@ -35,8 +35,8 @@ Arena::~Arena() {
 
 // _____________________________________________________________________________
 void Arena::addWall(Biker* biker) {
-  size_t x = biker->getXPos();
-  size_t y = biker->getYPos();
+  int x = biker->getXPos();
+  int y = biker->getYPos();
   _cells[x][y] = CellStatus(biker->getNumber());
 }
 
@@ -86,10 +86,8 @@ void Arena::show() {
         }
         if (_cells[x][y] != EMPTY) {
           printf("\x1b[7m");
-        } else {
-          printf("%s", RESET);
+          printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
         }
-        printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
       }
     }
   }
@@ -102,18 +100,28 @@ void Arena::removeWall(Biker* biker) {
     for (int y = 0; y < _yAl; y++) {
       if (_cells[x][y] == biker->getNumber()) {
         _cells[x][y] = EMPTY;
+        concealCell(x, y);
       }
     }
   }
 }
 
 // _____________________________________________________________________________
-void Arena::clearArea(size_t x, size_t y) {
+void Arena::concealCell(int x, int y) {
+  printf("%s", RESET);
+  for (int s = 0; s < 2; s++) {
+    printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
+  }
+}
+
+// _____________________________________________________________________________
+void Arena::clearArea(int x, int y) {
   for (int i = -2; i < 3; i++) {
     for (int j = -2; j < 3; j++) {
       // make sure values are within arena borders
       if (i + x >= 0 & j + y >= 0 & i + x < _xAl & j + y < _yAl) {
         _cells[i + x][j + y] = EMPTY;
+        concealCell(i + x, j + y);
       }
     }
   }
@@ -129,12 +137,12 @@ void Arena::reset() {
 }
 
 // _____________________________________________________________________________
-size_t Arena::getXAl() const {
+int Arena::getXAl() const {
   return _xAl;
 }
 
 // _____________________________________________________________________________
-size_t Arena::getYAl() const {
+int Arena::getYAl() const {
   return _yAl;
 }
 
