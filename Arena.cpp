@@ -68,6 +68,15 @@ void Arena::show() {
           case(PLAYER1):
             printf("%s", GREEN);
             break;
+          case(PLAYER2):
+            printf("%s", BLUE);
+            break;
+          case(PLAYER3):
+            printf("%s", YELLOW);
+            break;
+          case(PLAYER4):
+            printf("%s", RED);
+            break;
           case(COMPUTER1):
             printf("%s", YELLOW);
             break;
