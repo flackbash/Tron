@@ -19,14 +19,14 @@ class Arena {
   // destructor
   ~Arena();
 
-  // display the arena
-  void show();
+  // print the arena borders
+  void printBorders();
+
+  // print a new cell
+  void printCell(int x, int y);
 
   // add a new part of wall to the arena
   void addWall(Biker* biker);
-
-  // conceal a printed cell
-  void concealCell(int x, int y);
 
   // remove the walls of the player that has just crashed
   void removeWall(Biker* biker);

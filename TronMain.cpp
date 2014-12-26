@@ -3,10 +3,11 @@
 
 /*
 * Ideas:
-* further improvement on speed consistency
 * make computer opponents more intelligent
 *   computer opponents try to move within a certain radius of the player
 *   computer opponents try to move straight for a longer periode of time
+* keep score
+* add windows for score and hot keys and put arena in another one
 */
 
 #include <iostream>
@@ -20,7 +21,7 @@ int main(int argc, char** argv) {
   int yAl = 0;
   int numPlayers = 1;
   int numOpponents = 5;
-  int speed = 4;
+  int speed = 6;
   char def;
   // TODO(flackbash): fix problem with non integer inputs
   std::cout << "Default values? (y[es] / any other key) ";

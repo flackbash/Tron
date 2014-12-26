@@ -121,7 +121,6 @@ void Tron::play() {
         }
       }
 
-      // TODO(flackbash): keep speed constant for different arena sizes
       if (++counter % (10 * _speed) == 0) {
         // move computer opponents and get number of remaining opponents
         int oppLeft = 0;
@@ -141,7 +140,7 @@ void Tron::play() {
             playersLeft++;
           }
         }
-        arena->show();
+        arena->printBorders();
 
         // check whether the game is lost (no player remaining)
         if (playersLeft == 0) {

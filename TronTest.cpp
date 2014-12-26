@@ -5,7 +5,7 @@
 #include "./Tron.h"
 #include "./Biker.h"
 #include "./Arena.h"
-
+/*
 // _____________________________________________________________________________
 TEST(TronTest, move) {
   Arena* arena = new Arena(10, 10);
@@ -31,7 +31,7 @@ TEST(TronTest, move) {
   ASSERT_EQ(5, biker->_xPos);
   ASSERT_EQ(5, biker->_yPos);
 }
-
+*/
 
 // _____________________________________________________________________________
 TEST(TronTest, crashControl) {
@@ -85,7 +85,7 @@ TEST(TronTest, getCellStatus) {
   ASSERT_EQ(-10, arena->getCellStatus(1, -1));
   ASSERT_EQ(-10, arena->getCellStatus(1, 10));
 }
-
+/*
 // _____________________________________________________________________________
 TEST(TronTest, addWall) {
   Arena* arena = new Arena(10, 10);
@@ -114,7 +114,7 @@ TEST(TronTest, addWall) {
     }
   }
 }
-
+*/
 /*
 // _____________________________________________________________________________
 TEST(TronTest, removeWall) {

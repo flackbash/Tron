@@ -29,8 +29,67 @@ Arena::Arena(int x, int y) {
 
 // _____________________________________________________________________________
 Arena::~Arena() {
-  for (int i = 0; i < _xAl; i++) { delete _cells[i]; }
+  for (int i = 0; i < _xAl; i++) delete _cells[i];
   delete[] _cells;
+}
+
+// _____________________________________________________________________________
+void Arena::printBorders() {
+  printf("\x1b[7m");
+  printf("%s", RED);
+  // print horizontal borders
+  for (int i = 1; i <= (_xAl * 2) + 2; i++) {
+    printf("\x1b[%d;%dH ", 0, i);
+    printf("\x1b[%d;%dH ", _yAl + 2, i);
+  }
+  // print vertical borders
+  for (int i = 1; i <= _yAl + 1; i++) {
+    printf("\x1b[%d;%dH ", i, 1);
+    printf("\x1b[%d;%dH ", i, (_xAl * 2) + 2);
+  }
+  fflush(stdout);
+}
+
+// _____________________________________________________________________________
+void Arena::printCell(int x, int y) {
+  printf("\x1b[7m");
+  for (int s = 0; s < 2; s++) {
+    switch (_cells[x][y]) {
+      case(EMPTY):
+        printf("%s", RESET);
+        break;
+      case(PLAYER1):
+        printf("%s", GREEN);
+        break;
+      case(PLAYER2):
+        printf("%s", BLUE);
+        break;
+      case(PLAYER3):
+        printf("%s", YELLOW);
+        break;
+      case(PLAYER4):
+        printf("%s", RED);
+        break;
+      case(COMPUTER1):
+        printf("%s", CYAN);
+        break;
+      case(COMPUTER2):
+        printf("%s", MAGENTA);
+        break;
+      case(COMPUTER3):
+        printf("%s", WHITE);
+        break;
+      case(COMPUTER4):
+        printf("%s", CYAN);
+        break;
+      case(COMPUTER5):
+        printf("%s", MAGENTA);
+        break;
+    }
+    if (_cells[x][y] == EMPTY) printf("%s", RESET);
+    printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
+  }
+  fflush(stdout);
 }
 
 // _____________________________________________________________________________
@@ -38,69 +97,7 @@ void Arena::addWall(Biker* biker) {
   int x = biker->getXPos();
   int y = biker->getYPos();
   _cells[x][y] = CellStatus(biker->getNumber());
-}
-
-// _____________________________________________________________________________
-void Arena::show() {
-  // print arena borders
-  printf("\x1b[7m");
-  printf("%s", RED);
-  // horizontal borders
-  for (int i = 1; i <= (_xAl * 2) + 2; i++) {
-    printf("\x1b[%d;%dH ", 0, i);
-    printf("\x1b[%d;%dH ", _yAl + 2, i);
-  }
-  // vertical borders
-  for (int i = 1; i <= _yAl + 1; i++) {
-    printf("\x1b[%d;%dH ", i, 1);
-    printf("\x1b[%d;%dH ", i, (_xAl * 2) + 2);
-  }
-
-  printf("%s", RESET);
-  // print the bikers' walls
-  for (int y = 0; y < _yAl; y++) {
-    for (int x = 0; x < _xAl; x++) {
-      for (int s = 0; s < 2; s++) {
-        switch (_cells[x][y]) {
-          case(EMPTY):
-            printf("%s", RESET);
-            break;
-          case(PLAYER1):
-            printf("%s", GREEN);
-            break;
-          case(PLAYER2):
-            printf("%s", BLUE);
-            break;
-          case(PLAYER3):
-            printf("%s", YELLOW);
-            break;
-          case(PLAYER4):
-            printf("%s", RED);
-            break;
-          case(COMPUTER1):
-            printf("%s", YELLOW);
-            break;
-          case(COMPUTER2):
-            printf("%s", BLUE);
-            break;
-          case(COMPUTER3):
-            printf("%s", MAGENTA);
-            break;
-          case(COMPUTER4):
-            printf("%s", CYAN);
-            break;
-          case(COMPUTER5):
-            printf("%s", WHITE);
-            break;
-        }
-        if (_cells[x][y] != EMPTY) {
-          printf("\x1b[7m");
-          printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
-        }
-      }
-    }
-  }
-  fflush(stdout);
+  printCell(x, y);
 }
 
 // _____________________________________________________________________________
@@ -109,17 +106,9 @@ void Arena::removeWall(Biker* biker) {
     for (int y = 0; y < _yAl; y++) {
       if (_cells[x][y] == biker->getNumber()) {
         _cells[x][y] = EMPTY;
-        concealCell(x, y);
+        printCell(x, y);
       }
     }
-  }
-}
-
-// _____________________________________________________________________________
-void Arena::concealCell(int x, int y) {
-  printf("%s", RESET);
-  for (int s = 0; s < 2; s++) {
-    printf("\x1b[%d;%dH ", (_yAl - y) + 1, (x * 2) + 2 + s);
   }
 }
 
@@ -130,7 +119,7 @@ void Arena::clearArea(int x, int y) {
       // make sure values are within arena borders
       if (i + x >= 0 & j + y >= 0 & i + x < _xAl & j + y < _yAl) {
         _cells[i + x][j + y] = EMPTY;
-        concealCell(i + x, j + y);
+        printCell(i + x, j + y);
       }
     }
   }
